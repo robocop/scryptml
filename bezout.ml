@@ -35,14 +35,29 @@ let rec gcd a b =
   else 
     gcd b (a mod b)
 ;;
-let coprime a n = 
+(* Find the n-ième number coprime with a *)
+let findcp_n a n = 
   let rec coprime' a p n= 
-    if a mod p = 1 || p mod a = 1 then 
+    if gcd a p = 1 then 
       if n <= 0 then p
       else coprime' a (p+1) (n-1)
     else
       coprime' a (p+1) n
   in
-    coprime' a 2 n
+    coprime' a 1 n
 ;;
-coprime 12 4;;
+(* With the n-ième number coprime with a, find n*)
+(* p = findcp_n a n and find_cp_p a p = n  *)
+let findcp_p a p = 
+  let rec coprime' a p n = 
+    if gcd a p = 1 then 
+      if p <= 1 then n
+      else 
+	coprime' a (p-1) (n+1)
+    else
+      coprime' a (p-1) n
+  in
+    coprime' a p 0
+;;
+findcp_n 12 17;;
+findcp_p 12 53;;
