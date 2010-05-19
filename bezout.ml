@@ -6,6 +6,7 @@ let quotient a b = (a - (a mod b)) / b;;
 quotient a b is a / b
 *)
 
+let pos_mod a b = let r = a mod b in if r < 0 then r+(abs b) else r;;
 let bezout a b = 
   let rec bezout' un0 vn0 un1 vn1 rn0 rn1 = 
     let rn2 = rn0 mod rn1 in
@@ -33,7 +34,6 @@ let solve a b c =
   let k = c / pgcd in
     (u*k, v*k, pgcd*k)
 ;;
-
 let rec gcd a b = 
   if a mod b = 0 then b
   else 
@@ -91,6 +91,18 @@ let crypt key msg =
     done;
     r
 ;;  
+let decrypt key msg = 
+  let len = String.length msg in
+  let k = copy_key key len in
+  let arrk, arrm =  map_string (findcp_n 255|> int_of_char) k, map_string int_of_char msg in
+  let r = String.make len ' ' in
+    for i = 0 to len -1 do
+      let k,_,_ = solve arrk.(i) (-255) 1 in
+      r.[i] <- char_of_int $ mymod (k*arrm.(i)) 255;
+    done;
+    r
+;;
 
-crypt "test" "bonjour ! comment allez vous chers amis ?";;
+
+decrypt "mdp~" $ crypt "mdp~" "Lorem ipsum dolor sit amet.";;
 
