@@ -98,7 +98,7 @@ let decrypt key msg =
   let r = String.make len ' ' in
     for i = 0 to len -1 do
       let k,_,_ = solve arrk.(i) (-255) 1 in
-      r.[i] <- char_of_int $ mymod (k*arrm.(i)) 255;
+      r.[i] <- char_of_int $ pos_mod (k*arrm.(i)) 255;
     done;
     r
 ;;
