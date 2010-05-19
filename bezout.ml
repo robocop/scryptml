@@ -30,9 +30,19 @@ let solve a b c =
     (u*k, v*k, pgcd*k)
 ;;
 
-let rec find_prime_with a n p = 
-  let is_prime =  p mod a = 1 in
-    if is_prime && n = 0 then p
-    else find_prime_with a (if is_prime then n-1 else n) (p+1)
+let rec gcd a b = 
+  if a mod b = 0 then b
+  else 
+    gcd b (a mod b)
 ;;
-find_prime_with 26 24 2;;
+let find_n_coprime a n = 
+  let rec coprime' a p n= 
+    if gcd a p = 1then 
+      if n <= 0 then p
+      else coprime' a (p+1) (n-1)
+    else
+      coprime' a (p+1) n
+  in
+    coprime' a 1 n
+;;
+find_n_coprime n 5;;
