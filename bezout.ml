@@ -73,11 +73,24 @@ let rec map_string f s =
 
 let copy_key key n = 
   let len = String.length key in
-  let s = String.make n '0' in
+  let s = String.make n ' ' in
     for i = 0 to n-1 do
       s.[i] <- key.[i mod len];
     done;
     s
 ;;
 
-copy_key "abc" 10;;
+let crypt key msg = 
+  let len = String.length msg in
+  let k = copy_key key len in
+  let arrk =  map_string (findcp_n 255|> int_of_char) k in
+  let arrm =  map_string int_of_char msg in
+  let r = String.make len ' ' in
+    for i = 0 to len -1 do
+      r.[i] <- char_of_int $ arrm.(i) * arrk.(i) mod 255
+    done;
+    r
+;;  
+
+crypt "test" "bonjour ! comment allez vous chers amis ?";;
+
