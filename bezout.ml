@@ -1,7 +1,11 @@
+let ($) f g = f g;;
+let (|>) f g = fun x -> f (g x);;
+
 (*
 let quotient a b = (a - (a mod b)) / b;;
 quotient a b is a / b
 *)
+
 let bezout a b = 
   let rec bezout' un0 vn0 un1 vn1 rn0 rn1 = 
     let rn2 = rn0 mod rn1 in
@@ -59,5 +63,21 @@ let findcp_p a p =
   in
     coprime' a p 0
 ;;
-findcp_n 12 17;;
-findcp_p 12 53;;
+let rec map_string f s = 
+  let arr = Array.make (String.length s) (f (s.[0])) in
+  for i = 0 to String.length s -1 do
+    arr.(i) <- f $ s.[i]
+  done;
+    arr
+;;
+
+let copy_key key n = 
+  let len = String.length key in
+  let s = String.make n '0' in
+    for i = 0 to n-1 do
+      s.[i] <- key.[i mod len];
+    done;
+    s
+;;
+
+copy_key "abc" 10;;
